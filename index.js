@@ -6,4 +6,21 @@ module.exports = async (req, res) => {
   if (!to || !subject || !body) {
     return res.status(400).json({ error: 'Missing required fields: to, subject, body' });
   }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: process.env.SMTP_USER,
+    to,
+    subject,
+    html: body,
+  });
+
+  res.status(200).json({ status: 'sent', messageId: info.messageId });
 };
