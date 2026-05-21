@@ -29,7 +29,7 @@ const handler = async (req, res) => {
   }
 };
 
-if (require.main === module) {
+if (process.env.NODE_ENV !== 'test') {
   const express = require('express');
   const app = express();
   app.use(express.json());
