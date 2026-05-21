@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-module.exports = async (req, res) => {
+const handler = async (req, res) => {
   const { to, subject, body } = req.body || {};
 
   if (!to || !subject || !body) {
@@ -28,3 +28,14 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 };
+
+if (require.main === module) {
+  const express = require('express');
+  const app = express();
+  app.use(express.json());
+  app.post('/', handler);
+  const port = process.env.PORT || 8080;
+  app.listen(port, () => console.log(`Listening on port ${port}`));
+}
+
+module.exports = handler;
