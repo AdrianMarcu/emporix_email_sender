@@ -30,10 +30,10 @@ const handler = async (req, res) => {
   }
 };
 
-// Emporix runs `node index.js` directly, so require.main === module is true
-// and the server starts. When Jest requires this file, require.main points
-// to Jest's runner, so the server doesn't start and tests work cleanly.
-if (require.main === module) {
+// GCP Functions Framework requires this module (require.main is the framework
+// binary, not this file), so NODE_ENV is the right guard: Jest sets it to
+// 'test' automatically; Cloud Run does not set it at all.
+if (process.env.NODE_ENV !== 'test') {
   const app = express();
   app.use(express.json());
   app.post('/', handler);
