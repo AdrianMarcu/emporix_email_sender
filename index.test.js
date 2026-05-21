@@ -70,4 +70,17 @@ describe('email sending', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({ status: 'sent', messageId: '<abc@gmail.com>' });
   });
+
+  test('returns 500 when SMTP throws', async () => {
+    const mockSendMail = jest.fn().mockRejectedValue(new Error('Invalid login'));
+    nodemailer.createTransport.mockReturnValue({ sendMail: mockSendMail });
+
+    const req = { body: { to: 'recv@b.com', subject: 'Hi', body: '<p>Hello</p>' } };
+    const res = makeRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Invalid login' });
+  });
 });

@@ -15,12 +15,15 @@ module.exports = async (req, res) => {
     },
   });
 
-  const info = await transporter.sendMail({
-    from: process.env.SMTP_USER,
-    to,
-    subject,
-    html: body,
-  });
-
-  res.status(200).json({ status: 'sent', messageId: info.messageId });
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to,
+      subject,
+      html: body,
+    });
+    res.status(200).json({ status: 'sent', messageId: info.messageId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
