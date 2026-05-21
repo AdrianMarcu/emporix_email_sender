@@ -1,6 +1,8 @@
 const handler = require('./index');
 const nodemailer = require('nodemailer');
 
+jest.mock('nodemailer');
+
 function makeRes() {
   const res = {};
   res.status = jest.fn().mockReturnValue(res);
@@ -32,9 +34,15 @@ describe('validation', () => {
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({ error: 'Missing required fields: to, subject, body' });
   });
-});
 
-jest.mock('nodemailer');
+  test('returns 400 when req.body is undefined', async () => {
+    const req = {};
+    const res = makeRes();
+    await handler(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Missing required fields: to, subject, body' });
+  });
+});
 
 describe('email sending', () => {
   beforeEach(() => {
