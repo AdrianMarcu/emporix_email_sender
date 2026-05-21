@@ -1,0 +1,14 @@
+{
+  "name": "emporix-email-sender",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
