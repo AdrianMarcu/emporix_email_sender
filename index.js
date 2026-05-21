@@ -1,4 +1,4 @@
-const functions = require('@google-cloud/functions-framework');
+const express = require('express');
 const nodemailer = require('nodemailer');
 
 const handler = async (req, res) => {
@@ -30,5 +30,16 @@ const handler = async (req, res) => {
   }
 };
 
-functions.http('emailSender', handler);
+// Emporix runs `node index.js` directly, so require.main === module is true
+// and the server starts. When Jest requires this file, require.main points
+// to Jest's runner, so the server doesn't start and tests work cleanly.
+if (require.main === module) {
+  const app = express();
+  app.use(express.json());
+  app.post('/', handler);
+  app.listen(process.env.PORT || 8080, () => {
+    console.log(`Listening on port ${process.env.PORT || 8080}`);
+  });
+}
+
 module.exports = handler;
