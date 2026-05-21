@@ -81,6 +81,6 @@ describe('email sending', () => {
     await handler(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Invalid login' });
+    expect(res.json).toHaveBeenCalledWith({ error: 'Failed to send email' });
   });
 });
