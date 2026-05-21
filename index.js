@@ -1,3 +1,4 @@
+const functions = require('@google-cloud/functions-framework');
 const nodemailer = require('nodemailer');
 
 const handler = async (req, res) => {
@@ -29,13 +30,5 @@ const handler = async (req, res) => {
   }
 };
 
-if (process.env.NODE_ENV !== 'test') {
-  const express = require('express');
-  const app = express();
-  app.use(express.json());
-  app.post('/', handler);
-  const port = process.env.PORT || 8080;
-  app.listen(port, () => console.log(`Listening on port ${port}`));
-}
-
+functions.http('emailSender', handler);
 module.exports = handler;

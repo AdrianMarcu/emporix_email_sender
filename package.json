@@ -6,7 +6,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "express": "^4.21.2",
+    "@google-cloud/functions-framework": "^3.4.0",
     "nodemailer": "^6.9.14"
   },
   "devDependencies": {
