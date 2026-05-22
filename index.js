@@ -1,4 +1,3 @@
-const express = require('express');
 const nodemailer = require('nodemailer');
 
 const handler = async (req, res) => {
@@ -29,18 +28,6 @@ const handler = async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 };
-
-// GCP Functions Framework requires this module (require.main is the framework
-// binary, not this file), so NODE_ENV is the right guard: Jest sets it to
-// 'test' automatically; Cloud Run does not set it at all.
-if (process.env.NODE_ENV !== 'test') {
-  const app = express();
-  app.use(express.json());
-  app.post('/', handler);
-  app.listen(process.env.PORT || 8080, () => {
-    console.log(`Listening on port ${process.env.PORT || 8080}`);
-  });
-}
 
 module.exports = handler;
 module.exports.main = handler;
