@@ -43,3 +43,4 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = handler;
+module.exports.main = handler;
